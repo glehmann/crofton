@@ -43,7 +43,7 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 % snail-mail address if you like.
 \author{Ga\"etan Lehmann{$^1$} {\small{and}} David Legland{$^2$}}
 \authoraddress{{$^1$}INRA, UMR 1198; ENVA; CNRS, FRE 2857, Biologie du D\'eveloppement et Reproduction, Jouy en Josas, F-78350, France.\\
-{$^2$}INRA, XXX, France.}
+{$^2$}INRA, UMR 0782, G\'enie et Microbiologie des Proc\'ed\'es Alimentaire, Thiverval-Grignon, F-78850, France.}
 
 \begin{document}
 \maketitle
@@ -68,6 +68,33 @@ An implementation is provided and integrated in the LabelObject/LabelMap framewo
 
 \section{Principles}
 \subsection{Crofton formula}
+
+% Crofton formula
+Perimeter measure of 2D objects, surface area measure of 3D objects 
+and more generally $(d-1)$-surface measure of $d$-dimensional objects 
+can be expressed in a unified formalism by using the Crofton formula.
+This formula consists in integrating the intercept number of the object with
+lines of various orientation and positions. Its expression in
+the general form is:
+\begin{eqnarray}
+S^{(d-1)}(X) & = & \frac{d v_d}{\pi}\int_{\mathcal{L}^d}\chi\left(X\cap L\right) dL
+\end{eqnarray}
+where $X$ is the structure of interest, $v_d$ is the volume of the $d$-dimensional ball,
+$\mathcal{L}^d$ is the set of all lines in the $d$-dimensional space. 
+The Euler-Poincar\'e characteristic $\chi$ is equal to number of connected components
+of the intersection of $X$ with a line $L$.
+
+% 2D and 3D
+For planar and 3D cases, Equation 1 can be rewritten:
+\begin{eqnarray}
+P(X) & = & \pi \int_{\mathcal{L}^2} \chi \left( X \cap L \right) dL \\
+S(X) & = &  4  \int_{\mathcal{L}^3} \chi \left( X \cap L \right) dL
+\end{eqnarray}
+
+% discretisation
+The Crofton formula can be easily applied to discrete binary images. 
+The integral over lines can be decomposed into an integral over a finite set of directions
+and an integral over lines parallel to a given direction.
 
 \subsection{Intercepts count in digital images}
 
