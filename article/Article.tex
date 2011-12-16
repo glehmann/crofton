@@ -64,13 +64,15 @@ An implementation is provided and integrated in the LabelObject/LabelMap framewo
 
 \tableofcontents
 
+\section{Introduction}
+
 \section{Principles}
 \subsection{Crofton formula}
 
-\subsection{Implementation}
+\subsection{Intercepts count in digital images}
 
-The number of intercepts, required to use the method described earlier, can be efficiently computed by using the run-length encoding of
-the binary objects.
+The intercepts count, required to use the method described earlier, can be efficiently computed by using the run-length
+encoding of the binary objects.
 
 The implementation of this algorithm has been done in the \verb$itk::ShapeLabelMapFilter$ class, which is already in charge of the computation of
 several shape descriptors. The run-length encoding used in the \verb$itk::LabelObject$ representation is reused.
