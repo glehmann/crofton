@@ -1,6 +1,6 @@
 
-# you should use the title of the article instead
-ARTICLE_TITLE = A Great Article For The Insight Journal
+# you should use the title of the article instead (this is the short title)
+ARTICLE_TITLE = Surface estimation using Crofton formula and run-length encoding
 
 # spaces are not allowed
 empty:=

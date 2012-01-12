@@ -9,10 +9,22 @@
 \documentclass{InsightArticle}
 
 
+% to be able to use options in graphics
+\usepackage{graphicx}
+% for pseudo code
+\usepackage{listings}
+% subfigures
+\usepackage{subfigure}
+
+% some maths symbols
+\usepackage{amstext,amssymb}
+
+% to include accents in bliblio
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 %  hyperref should be the last package to be loaded.
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[dvips,
 bookmarks,
@@ -20,12 +32,7 @@ bookmarksopen,
 backref,
 colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 ]{hyperref}
-% to be able to use options in graphics
-\usepackage{graphicx}
-% for pseudo code
-\usepackage{listings}
-% subfigures
-\usepackage{subfigure}
+
 
 
 %  This is a template for Papers to the Insight Journal. 
@@ -81,8 +88,12 @@ S^{(d-1)}(X) & = & \frac{d v_d}{\pi}\int_{\mathcal{L}^d}\chi\left(X\cap L\right)
 \end{eqnarray}
 where $X$ is the structure of interest, $v_d$ is the volume of the $d$-dimensional ball,
 $\mathcal{L}^d$ is the set of all lines in the $d$-dimensional space. 
+The above integral is normalised such that the mass of lines hitting the unit ball 
+equals $v_{d-1}$, the measure of the unit ball projection on a $(d-1)$-dimensional plane.
+
 The Euler-Poincar\'e characteristic $\chi$ is equal to number of connected components
-of the intersection of $X$ with a line $L$.
+of the intersection of $X$ with a line $L$, or equivalently half the number of intersections
+of the boundary of $X$ with the line.
 
 % 2D and 3D
 For planar and 3D cases, Equation 1 can be rewritten:
@@ -92,11 +103,11 @@ S(X) & = &  4  \int_{\mathcal{L}^3} \chi \left( X \cap L \right) dL
 \end{eqnarray}
 
 % discretisation
-The Crofton formula can be easily applied to discrete binary images. 
+The Crofton formula can be easily applied to discrete binary images \cite{Lang2001, Legland2007}. 
 The integral over lines can be decomposed into an integral over a finite set of directions
 and an integral over lines parallel to a given direction.
 The number of connected components in the intersections of the structure with a discrete line
-can be obtained by counting the number of intercepts with its boundary.
+is obtained by counting the number of intercepts with its boundary.
 
 \subsection{Intercepts count in digital images}
 
@@ -131,20 +142,110 @@ from the perimeter like the roundness.
 
 \subsection{Circularity}
 
+The (planar) circularity (often called "shape factor") is defined as:
+\begin{eqnarray}
+f = 4\pi \frac{A}{p^2}
+\end{eqnarray}
+
+Circularity takes values between $0$ and $1$. It is equal to $1$ for circular shapes, and decreases for elongated shapes.
+
+[on garde la circularité ?]
 
 \section{Evaluation method}
-\subsection{Shape discretization}
+
 \subsection{Test shapes}
-\subsection{Measurments}
+
+Perimeter and surface area are measured on discretization of various 2D and 3D shapes 
+whose true perimeter or surface area is known.
+
+Planar test shapes include:
+\begin{itemize}
+\item disks
+\item ring, obtained by the difference of several disks
+\item trefoil shape
+\item ellipses with $a=XX$ and $b=XX$
+\item rectangle with length $XX$ and width $XX$
+\end{itemize}
+
+% % Example of reconstruction of a discrete disk
+% \begin{figure}[!htb]
+% \begin{center}
+% \includegraphics[width=5cm]{discreteDisk.eps}
+% %\includegraphics[width=5cm][bb=0 0 605 605]{chick.png}
+% \end{center}
+% \end{figure}
+
+
+Test shapes for 3D measurements include:
+\begin{itemize}
+\item balls with various radii
+\item hollow ball
+\item prolate and oblate ellipsoids
+\item cuboids
+\end{itemize}
+
+\subsection{Shape discretization}
+
+A 2D or 3D binary image can be considered as a subset of a rectangular grid $L_d$ where
+d = 2,3. Such a grid can be written as
+\begin{eqnarray}
+L_d = \Delta_{1} \mathbb{Z} \times \ldots \times \Delta_{1} \mathbb{Z},
+\end{eqnarray}
+
+where the $d$-uple $(\Delta_{1},\ldots,\Delta_{d})$ defines the pixel
+or voxel size. A digitization scheme represents how a continuous
+structure $X$ is digitized into a binary image $X_\text{d}$. According to
+the lattice scheme, $X_\text{d} = X\cap\mathbb{L}^d$. According to the
+covering scheme a grid point $x$ belongs to $X_\text{d}$ if the grid
+cell centered on $x$ hits $X$. 
+This paper assumes isotropic resolution, i.e. $\Delta_{i}$ being the same for all $i$.
+
+\subsection{Measurements}
+
+For each test shape, measurements were made on
+several discretisation of the shape, with various orientations and various origins.
+
+The center of each shape was chosen at random within the center pixel or voxel of the grid.
+
 \subsection{Timing evaluation}
 
+???
 
 \section{Accuracy}
+
+\subsection{Global accuracy}
+
+[Tableaux qui donnent les valeurs moyennes pour les differentes formes]
+
+%
+\begin{table}[!htb]
+\begin{center}
+\begin{tabular}{|c|c|c|c|} \hline 
+shape		    & $U$		& $U_d^2$ & $U_d^4$		\tabularnewline \hline
+disk		    & $251.33$	& $251.31$ 	& $251.32$ 	\tabularnewline
+ring		    & $376.99$	& $376.99$ 	& $377.02$	\tabularnewline
+rectangle  $0$ 	& $120.00$ 	&\ \ $94.24$& $112.66$	\tabularnewline
+rectangle $30$  & $-$ 		& $127.23$	& $120.82$	\tabularnewline
+rectangle $45$  & $-$ 		& $131.95$	& $113.18$	\tabularnewline
+\hline
+\end{tabular}\end{center}
+\caption{\label{tab:Validate-Perimeter}
+Differences between theoretical and measured perimeter of planar shapes.
+Approximations were computed using $2$ and $4$ directions.
+}
+\end{table}
+
 \subsection{Position effect}
+
+[On regarde effet de la resolution et de la dispersion des mesures]
+[-> 1 graphe 2D, 1 graphe 3D, avec superposition des mesures ?]
+
 \subsection{Orientation effect}
 
 
 \section{Timing}
+
+[c'est rapide]
 
 \section{Application}
 
