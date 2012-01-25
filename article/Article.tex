@@ -33,8 +33,6 @@ backref,
 colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 ]{hyperref}
 
-
-
 %  This is a template for Papers to the Insight Journal. 
 %  It is comparable to a technical report format.
 
@@ -73,6 +71,13 @@ An implementation is provided and integrated in the LabelObject/LabelMap framewo
 
 \section{Introduction}
 
+Dans l'intro, mettre :
+* mesure perimetre ou surface est important
+* liste des differentes methodes pour mesures surface / perimetre
+    * choix marching cubes pour comparer
+* parler des facteurs de forme et introduire "roundness"
+* plan de l'article
+
 \section{Principles}
 \subsection{Crofton formula}
 
@@ -102,17 +107,37 @@ P(X) & = & \pi \int_{\mathcal{L}^2} \chi \left( X \cap L \right) dL \\
 S(X) & = &  4  \int_{\mathcal{L}^3} \chi \left( X \cap L \right) dL
 \end{eqnarray}
 
-% discretisation
+\subsection{Crofton formula in discrete images}
+
 The Crofton formula can be easily applied to discrete binary images \cite{Lang2001, Legland2007}. 
 The integral over lines can be decomposed into an integral over a finite set of directions
 and an integral over lines parallel to a given direction.
 The number of connected components in the intersections of the structure with a discrete line
 is obtained by counting the number of intercepts with its boundary.
 
+[Ajouter une formule avec des sommes a la place des integrales]
+
+[dire comment on calcule les poids (1) des espaces entre les droites et (2) des poids associes aux directions]
+[Cas des directions principales ($d$ en $nd$) et de toutes les directions (4 en 2D et 13 en 3D)]
+
 \subsection{Intercepts count in digital images}
 
 The intercepts count, required to use the method described earlier, can be efficiently computed by using the run-length
 encoding of the binary objects.
+
+\subsection{Roundness}
+
+The roundness is defined the ratio of equivalent $d$-perimeter over the measured $d$-perimeter:
+\begin{eqnarray}
+roundness = \frac{P_{eq}}{P}
+\end{eqnarray}
+
+Roundness takes values between $0$ and $1$. 
+It is equal to $1$ for circular or spherical shapes, 
+and decreases for more complicated shapes.
+
+
+\section{Implementation}
 
 The implementation of this algorithm has been done in the \verb$itk::ShapeLabelMapFilter$ class, which is already in charge of the computation of
 several shape descriptors. The run-length encoding used in the \verb$itk::LabelObject$ representation is reused.
@@ -120,16 +145,16 @@ The implementation is N-dimensional and thus is usable for any image dimension. 
 to provide a more accurate estimation by also using the diagonals -- 4 directions in 2D and 13 directions in 3D. In the 4D case and greater,
 the diagonals are not used.
 
-\subsubsection{N-Dimensional name}
+\subsection{N-Dimensional name}
 The attribute is called {\em Perimeter} independently of the dimension of the image and is available in the \verb$itk::ShapeLabelObject$.
 
-\subsubsection{Border management}
+\subsection{Border management}
 
 The borders of the image is considered to be in the background, so the contour of an object touching the border of the image is measured.
 This was not the case in the previous (undocumented) implementation and has been proven to be misleading for many users.
 It is possible to subtract the perimeter on the border to the full perimeter if the measure without the part touching the border is needed.
 
-\subsubsection{Multithreading}
+\subsection{Multithreading}
 
 The architecture implemented in \verb$itk::ShapeLabelMapFilter$ use one thread per LabelObject. The perimeter estimation has been integrated in this
 architecture, providing a multithreaded implementation as long as there are several LabelObjects in the input LabelMap.
@@ -139,17 +164,6 @@ The perimeter estimation is now turned on by default, but can still disabled wit
 \verb$itk::ShapeLabelMapFilter$ if not needed. This should enhance the user experience, especially for the attributes non obviously derived
 from the perimeter like the roundness.
 
-
-\subsection{Circularity}
-
-The (planar) circularity (often called "shape factor") is defined as:
-\begin{eqnarray}
-f = 4\pi \frac{A}{p^2}
-\end{eqnarray}
-
-Circularity takes values between $0$ and $1$. It is equal to $1$ for circular shapes, and decreases for elongated shapes.
-
-[on garde la circularité ?]
 
 \section{Evaluation method}
 
@@ -167,14 +181,12 @@ Planar test shapes include:
 \item rectangle with length $XX$ and width $XX$
 \end{itemize}
 
-% % Example of reconstruction of a discrete disk
-% \begin{figure}[!htb]
-% \begin{center}
-% \includegraphics[width=5cm]{discreteDisk.eps}
-% %\includegraphics[width=5cm][bb=0 0 605 605]{chick.png}
-% \end{center}
-% \end{figure}
-
+ % Example of reconstruction of a discrete disk
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=5cm]{images/discreteDisk}
+\end{center}
+\end{figure}
 
 Test shapes for 3D measurements include:
 \begin{itemize}
@@ -206,6 +218,14 @@ For each test shape, measurements were made on
 several discretisation of the shape, with various orientations and various origins.
 
 The center of each shape was chosen at random within the center pixel or voxel of the grid.
+
+Perimeter of 2D discretized shapes was measured using Crofton method using 2 and 4 directions, 
+and by computing the length of the reconstructed contour (method ?).
+Surface area of 3D discretized shapes was measured using Crofton method using 3 and 13 directions, 
+and by computing the surface area of the reconstruced shape obtained by the marching cubes algorithm.
+The average and the standard deviation of measurements were computed for all shapes discretized
+with the same resolution. Effect of orientation was investigated by computing average and standard 
+deviation of shapes having the same orientation.
 
 \subsection{Timing evaluation}
 
