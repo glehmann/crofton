@@ -129,8 +129,20 @@ encoding of the binary objects.
 
 The roundness is defined the ratio of equivalent $d$-perimeter over the measured $d$-perimeter:
 \begin{eqnarray}
-roundness = \frac{P_{eq}}{P}
+roundness             & = & \frac{P_{eq}}{P} \\
+P_{eq}                & = & \frac{d \cdot V_{eq}}{R_{eq}} \\
+R_{eq}                & = & \sqrt[d]{\frac{V\cdot\Gamma(\frac{d+1}{2})}{\pi^\frac{d}{2}}} \\
+\Gamma(\frac{d+1}{2}) & = & \begin{cases}
+                               \frac{d}{2}!, & \text{if}~ d \text{is even} \\
+                               \frac{sqrt{\pi} \cdot d!!}{2^{\frac{d+1}{2}}}, & \text{if}~ d \text{is odd} \\
+                            \end{cases}
+d!!                   & = & \begin{cases}
+                               1, & \text{if}~ d \leq 1 \\
+                               n \cdot n!!, & \text{otherwise} \\
+                               \frac{sqrt{\pi} \cdot d!!}{2^{\frac{d+1}{2}}}, & \text{if}~ d \text{is odd} \\
+                            \end{cases}
 \end{eqnarray}
+
 
 Roundness takes values between $0$ and $1$. 
 It is equal to $1$ for circular or spherical shapes, 
