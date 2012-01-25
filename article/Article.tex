@@ -127,20 +127,20 @@ encoding of the binary objects.
 
 \subsection{Roundness}
 
-The roundness is defined the ratio of equivalent $d$-perimeter over the measured $d$-perimeter:
+The roundness is defined the ratio of equivalent $d$-perimeter over the measured $d$-perimeter. 
+The equivalent $d$-perimeter is defined as the perimeter of the $d$-ball with same volume $V$.
 \begin{eqnarray}
 roundness             & = & \frac{P_{eq}}{P} \\
 P_{eq}                & = & \frac{d \cdot V_{eq}}{R_{eq}} \\
-R_{eq}                & = & \sqrt[d]{\frac{V\cdot\Gamma(\frac{d+1}{2})}{\pi^\frac{d}{2}}} \\
+R_{eq}                & = & \sqrt[\displaystyle d]{\frac{V\cdot\Gamma(\frac{d+1}{2})}{\pi^\frac{d}{2}}} \\
 \Gamma(\frac{d+1}{2}) & = & \begin{cases}
-                               \frac{d}{2}!, & \text{if}~ d \text{is even} \\
-                               \frac{sqrt{\pi} \cdot d!!}{2^{\frac{d+1}{2}}}, & \text{if}~ d \text{is odd} \\
-                            \end{cases}
+                               \displaystyle \frac{d}{2}!  &\text{if}~ d ~\text{is even} \\
+                               \displaystyle \frac{\sqrt{\pi} \cdot d!!}{2^{\frac{d+1}{2}}}  &\text{if}~ d ~\text{is odd} \\
+                            \end{cases} \\
 d!!                   & = & \begin{cases}
-                               1, & \text{if}~ d \leq 1 \\
-                               n \cdot n!!, & \text{otherwise} \\
-                               \frac{sqrt{\pi} \cdot d!!}{2^{\frac{d+1}{2}}}, & \text{if}~ d \text{is odd} \\
-                            \end{cases}
+                                1 &\text{if}~ d \leq 1 \\
+                                d \cdot (d-2)!!  & \text{otherwise} \\
+                             \end{cases}
 \end{eqnarray}
 
 
@@ -184,29 +184,12 @@ from the perimeter like the roundness.
 Perimeter and surface area are measured on discretization of various 2D and 3D shapes 
 whose true perimeter or surface area is known.
 
-Planar test shapes include:
-\begin{itemize}
-\item disks
-\item ring, obtained by the difference of several disks
-\item trefoil shape
-\item ellipses with $a=XX$ and $b=XX$
-\item rectangle with length $XX$ and width $XX$
-\end{itemize}
+Planar test shapes include disks, rings obtained by the difference of several disks,
+trefoil shape, ellipses with $a=XX$ and $b=XX$, and rectangle with length $XX$ and width $XX$.
 
- % Example of reconstruction of a discrete disk
-\begin{figure}[!htb]
-\begin{center}
-\includegraphics[width=5cm]{images/discreteDisk}
-\end{center}
-\end{figure}
-
-Test shapes for 3D measurements include:
-\begin{itemize}
-\item balls with various radii
-\item hollow ball
-\item prolate and oblate ellipsoids
-\item cuboids
-\end{itemize}
+Test shapes for 3D measurements include
+balls with various radii, hollow ball, prolate and oblate ellipsoids, and cuboids. 
+For each type of shape, several orientations were considered.
 
 \subsection{Shape discretization}
 
@@ -218,11 +201,21 @@ L_d = \Delta_{1} \mathbb{Z} \times \ldots \times \Delta_{1} \mathbb{Z},
 
 where the $d$-uple $(\Delta_{1},\ldots,\Delta_{d})$ defines the pixel
 or voxel size. A digitization scheme represents how a continuous
-structure $X$ is digitized into a binary image $X_\text{d}$. According to
-the lattice scheme, $X_\text{d} = X\cap\mathbb{L}^d$. According to the
+structure $X$ is digitized into a binary image $X_\text{d}$. 
+According to the
 covering scheme a grid point $x$ belongs to $X_\text{d}$ if the grid
-cell centered on $x$ hits $X$. 
+cell centered on $x$ hits $X$ (See Fig.~\ref{fig:DiskDiscretization}).
+
+% Example of reconstruction of a discrete disk
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=5cm]{images/discreteDisk}
+\end{center}
+\caption{Discretization of a disk}
+\label{fig:DiskDiscretization}
+\end{figure}
 This paper assumes isotropic resolution, i.e. $\Delta_{i}$ being the same for all $i$.
+
 
 \subsection{Measurements}
 
