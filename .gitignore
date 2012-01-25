@@ -3,7 +3,7 @@
 *.bak
 *.backup
 
-*.eps
+#*.eps
 
 # latex specific
 *.brf
@@ -16,3 +16,4 @@
 *.ps
 *.gz
 *.toc
+*.bbl

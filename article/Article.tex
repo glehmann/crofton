@@ -8,6 +8,7 @@
 
 \documentclass{InsightArticle}
 
+\usepackage{color}
 
 % to be able to use options in graphics
 \usepackage{graphicx}
@@ -33,6 +34,11 @@ backref,
 colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 ]{hyperref}
 
+ \definecolor{lightgray}{gray}{.75}
+\newcommand{\commentaire}[1]{
+\colorbox{lightgray}{#1}
+}
+
 %  This is a template for Papers to the Insight Journal. 
 %  It is comparable to a technical report format.
 
@@ -46,9 +52,15 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 
 % At minimum, give your name and an email address.  You can include a
 % snail-mail address if you like.
-\author{Ga\"etan Lehmann{$^1$} {\small{and}} David Legland{$^2$}}
-\authoraddress{{$^1$}INRA, UMR 1198; ENVA; CNRS, FRE 2857, Biologie du D\'eveloppement et Reproduction, Jouy en Josas, F-78350, France.\\
-{$^2$}INRA, UMR 0782, G\'enie et Microbiologie des Proc\'ed\'es Alimentaire, Thiverval-Grignon, F-78850, France.}
+\author{Ga\"etan Lehmann$^{1,2}$ {\small{and}} David Legland$^{3,4,5}$}
+
+\authoraddress{\small{
+{$^1$}INRA, UMR 1198 Biologie du D\'eveloppement et Reproduction, Jouy-en-Josas, F-78350, France\\
+{$^2$}ENVA, UMR 1198 Biologie du D\'eveloppement et Reproduction, Jouy-en-Josas, F-78350, France\\
+{$^3$}INRA, UMR 0782 G\'enie et Microbiologie des Proc\'ed\'es Alimentaire, Thiverval-Grignon, F-78850, France\\
+{$^4$}AgroParisTech, UMR 0782 G\'enie et Microbiologie des Proc\'ed\'es Alimentaire, Thiverval-Grignon, F-78850, France\\
+{$^5$}INRA, UMR 1318 Institut Jean-Pierre Bourgin, Versailles, F-78026, France
+}}
 
 \begin{document}
 \maketitle
@@ -71,12 +83,26 @@ An implementation is provided and integrated in the LabelObject/LabelMap framewo
 
 \section{Introduction}
 
-Dans l'intro, mettre :
-* mesure perimetre ou surface est important
-* liste des differentes methodes pour mesures surface / perimetre
-    * choix marching cubes pour comparer
-* parler des facteurs de forme et introduire "roundness"
-* plan de l'article
+Surface area and perimeter are widely used parameters describing the size of objects observed in images, 
+and are commonly used for computing various shape factors.
+Unlike the area that can be easily measured by counting pixels belonging to the object, measuring the 
+perimeter is not as straightforward, 
+and naive methods can lead to huge systematic errors \cite{Klette2004, Legland2007}.
+Usually, the countour of the object is extracted, then its length is measured.
+The same approach is usually applied to 3D images: the boundary of the 3D object is first reconstructed,
+e.g. by using marching cubes \cite{Lorensen1987}, then its surface area is computed by summing 
+area of individual triangles.
+
+The Crofton method is an alternative method that allows measuring the perimeter of 2D objects,
+the surface area of 3D objects, and more generally the $(d-1)$-dimensional measure of $d$-dimensional 
+object boundary. 
+\commentaire{Ajouter un petit argumentaire sur convergence des mesures avec Crofton.}
+
+The article first recalls the mathematical principles of $d$-perimeter measures in digital images
+using the Crofton method. An efficient implementation based on run-length encoding is then presented.
+The method is evaluated on various $2D$ and $3D$ synthetic shapes and compared with other methods.
+The effect on the roundness shape factor is also investigated.
+
 
 \section{Principles}
 \subsection{Crofton formula}
@@ -89,7 +115,7 @@ This formula consists in integrating the intercept number of the object with
 lines of various orientation and positions. Its expression in
 the general form is:
 \begin{eqnarray}
-S^{(d-1)}(X) & = & \frac{d v_d}{\pi}\int_{\mathcal{L}^d}\chi\left(X\cap L\right) dL
+S^{(d-1)}(X) & = & \frac{d \cdot v_d}{\pi}\int_{\mathcal{L}^d}\chi\left(X\cap L\right) dL
 \end{eqnarray}
 where $X$ is the structure of interest, $v_d$ is the volume of the $d$-dimensional ball,
 $\mathcal{L}^d$ is the set of all lines in the $d$-dimensional space. 
@@ -114,11 +140,13 @@ The integral over lines can be decomposed into an integral over a finite set of 
 and an integral over lines parallel to a given direction.
 The number of connected components in the intersections of the structure with a discrete line
 is obtained by counting the number of intercepts with its boundary.
+\commentaire{ 
+Ajouter une formule avec des sommes a la place des integrales (David)}
 
-[Ajouter une formule avec des sommes a la place des integrales]
+\commentaire{dire comment on calcule les poids (1) des espaces entre les droites et (2) des poids associes aux directions}
 
-[dire comment on calcule les poids (1) des espaces entre les droites et (2) des poids associes aux directions]
-[Cas des directions principales ($d$ en $nd$) et de toutes les directions (4 en 2D et 13 en 3D)]
+\commentaire{Cas des directions principales ($d$ en $nd$) et de toutes les directions (4 en 2D et 13 en 3D)}
+
 
 \subsection{Intercepts count in digital images}
 
@@ -214,7 +242,6 @@ cell centered on $x$ hits $X$ (See Fig.~\ref{fig:DiskDiscretization}).
 \caption{Discretization of a disk}
 \label{fig:DiskDiscretization}
 \end{figure}
-This paper assumes isotropic resolution, i.e. $\Delta_{i}$ being the same for all $i$.
 
 
 \subsection{Measurements}
@@ -225,7 +252,7 @@ several discretisation of the shape, with various orientations and various origi
 The center of each shape was chosen at random within the center pixel or voxel of the grid.
 
 Perimeter of 2D discretized shapes was measured using Crofton method using 2 and 4 directions, 
-and by computing the length of the reconstructed contour (method ?).
+and by computing the length of the reconstructed contour (Matlab Software was used).
 Surface area of 3D discretized shapes was measured using Crofton method using 3 and 13 directions, 
 and by computing the surface area of the reconstruced shape obtained by the marching cubes algorithm.
 The average and the standard deviation of measurements were computed for all shapes discretized
@@ -238,35 +265,48 @@ deviation of shapes having the same orientation.
 
 \section{Accuracy}
 
-\subsection{Global accuracy}
+\subsection{Perimeter of disks at various resolutions}
 
-[Tableaux qui donnent les valeurs moyennes pour les differentes formes]
+Figure \ref{fig:MeasureDiskPerimeter} shows average and standard deviation of perimeter
+measured on disks with various resolutions. Perimeter measured using Crofton method converges
+towards the real value when the resolution increase. 
+The convergence speed is faster when four directions are used instead of two, 
+and the variability is lower.
 
-%
-\begin{table}[!htb]
+% Example of reconstruction of a discrete disk
+\begin{figure}[!htb]
 \begin{center}
-\begin{tabular}{|c|c|c|c|} \hline 
-shape		    & $U$		& $U_d^2$ & $U_d^4$		\tabularnewline \hline
-disk		    & $251.33$	& $251.31$ 	& $251.32$ 	\tabularnewline
-ring		    & $376.99$	& $376.99$ 	& $377.02$	\tabularnewline
-rectangle  $0$ 	& $120.00$ 	&\ \ $94.24$& $112.66$	\tabularnewline
-rectangle $30$  & $-$ 		& $127.23$	& $120.82$	\tabularnewline
-rectangle $45$  & $-$ 		& $131.95$	& $113.18$	\tabularnewline
-\hline
-\end{tabular}\end{center}
-\caption{\label{tab:Validate-Perimeter}
-Differences between theoretical and measured perimeter of planar shapes.
-Approximations were computed using $2$ and $4$ directions.
-}
-\end{table}
+\includegraphics[width=10cm]{images/perimeterDisks}
+\end{center}
+\caption{Perimeter measure of disks with various resolutions and at random positions}
+\label{fig:MeasureDiskPerimeter}
+\end{figure}
 
-\subsection{Position effect}
+Perimeters measured with Matlab show similar variability, but the measured values do not
+converge toward the true value. This shows the inaccuracy of the method consisting in
+counting boundary pixels.
 
-[On regarde effet de la resolution et de la dispersion des mesures]
-[-> 1 graphe 2D, 1 graphe 3D, avec superposition des mesures ?]
+The oscillations of the variability is due to the fact that for disks with diameters equal to an
+integer, the number of intersections with horizontal or vertical lines is always the same, 
+thus greatly reducing the variability of measures. 
 
-\subsection{Orientation effect}
+\subsection{Perimeter of squares with various orientations}
 
+Figure \ref{fig:MeasureSquareOriented} shows measures obtained on discretized squares (side 30 pixels)
+with various orientations. All methods oscillate around the expected value. 
+Using Crofton method with only 2 directions can produce greater errors on the measure than with 4 
+directions.
+
+
+% Example of reconstruction of a discrete squares with various orientations
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=8cm]{images/errorSquareRotated}
+\includegraphics[width=8cm]{images/errorRelSquareRotated}
+\end{center}
+\caption{Variations of perimeter measure of a digitized square depending on the orientation}
+\label{fig:MeasureSquareOriented}
+\end{figure}
 
 \section{Timing}
 
@@ -274,8 +314,9 @@ Approximations were computed using $2$ and $4$ directions.
 
 \section{Application}
 
-ICOPAN
+\subsection{ICOPAN}
 
+Methods were applied on images acquired within the ICOPAN project \cite{Andrey2010}.
 
 \appendix
 
