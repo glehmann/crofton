@@ -203,6 +203,8 @@ xno[0] \GETS 1 \\
       nMax \GETS pos(inl) - 1 \\
       \WHILE isNotAtEnd(il) \DO
       \BEGIN
+        lMin \GETS pos(il) \\
+        lMax \GETS pos(il) + length(il) - 1 \\
         \COMMENT{measure the intersection of these two lines} \\
 	ic[no] \GETS ic[no] + max( 0, min( lMax, nMax ) - max( lMin, nMin ) + 1 ) \\
 	ic[dno] \GETS ic[dno] + max( 0, min( lMax, nMax+1 ) - max( lMin, nMin+1 ) + 1 )\\
