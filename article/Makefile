@@ -50,7 +50,7 @@ eps: $(OUTPUT_EPS)
 ${NAME}.ps: ${NAME}.dvi
 	dvips -R0 -o ${NAME}.ps ${NAME}.dvi
 
-%.eps: ../images/%.tif
+%.eps: images/%.tif
 	convert $< $@
 
 
@@ -68,7 +68,6 @@ ${NAME}.bbl: ${BIBS} ${NAME}.aux
 
 
 ${NAME}.dvi: ${NAME}.tex  ${BIBS}
-	$(MAKE) eps
 	latex -interaction=nonstopmode ${NAME}.tex
 	bibtex ${NAME}
 	latex -interaction=nonstopmode ${NAME}.tex
