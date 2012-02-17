@@ -127,8 +127,8 @@ int main(int argc, char *argv[])
     itk::TimeProbe mass2Time;
     itk::TimeProbe imeshTime;
     itk::TimeProbe isurfTime;
-    for(int i=0; i<=1; i++ )
-      {  
+    for(int i=0; i<=10; i++ )
+      {
       smoothing->Modified();
       smoothingTime.Start();
       smoothing->Update();
