@@ -104,8 +104,8 @@ FIND_PACKAGE(VTK)
 if(VTK_DIR)
   INCLUDE(${VTK_USE_FILE})
   
-  ADD_EXECUTABLE(marchingCubes marchingCubes.cxx)
-  TARGET_LINK_LIBRARIES(marchingCubes vtkHybrid ${Libraries})
+  ADD_EXECUTABLE(perf3D perf3D.cxx)
+  TARGET_LINK_LIBRARIES(perf3D vtkHybrid ${Libraries})
 endif()
 
 ENDIF(BUILD_TESTING)

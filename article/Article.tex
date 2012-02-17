@@ -38,6 +38,8 @@
 \colorbox{lightgray}{#1}
 }
 
+\let\oldtabular=\tabular
+\def\tabular{\small\oldtabular}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  hyperref should be the last package to be loaded.
@@ -237,8 +239,8 @@ xno[0] \GETS 1 \\
       \COMMENT{all the lines are on a contour} \\
       \FOREACH l \in ls \DO
       \BEGIN
-	ic[no] \GETS ic[no] + length(l)\\
-	ic[dno] \GETS ic[dno] + 2 \cdot length(l)
+    ic[no] \GETS ic[no] + length(l)\\
+    ic[dno] \GETS ic[dno] + 2 \cdot length(l)
       \END
     \END
     \ELSE
@@ -253,20 +255,20 @@ xno[0] \GETS 1 \\
         lMin \GETS pos(il) \\
         lMax \GETS pos(il) + length(il) - 1 \\
         \COMMENT{measure the intersection of these two lines} \\
-	ic[no] \GETS ic[no] + max( 0, min( lMax, nMax ) - max( lMin, nMin ) + 1 ) \\
-	ic[dno] \GETS ic[dno] + max( 0, min( lMax, nMax+1 ) - max( lMin, nMin+1 ) + 1 )\\
-	ic[dno] \GETS ic[dno] + max( 0, min( lMax, nMax-1 ) - max( lMin, nMin-1 ) + 1 )\\
+    ic[no] \GETS ic[no] + max( 0, min( lMax, nMax ) - max( lMin, nMin ) + 1 ) \\
+    ic[dno] \GETS ic[dno] + max( 0, min( lMax, nMax+1 ) - max( lMin, nMin+1 ) + 1 )\\
+    ic[dno] \GETS ic[dno] + max( 0, min( lMax, nMax-1 ) - max( lMin, nMin-1 ) + 1 )\\
         \COMMENT{and move to the next line, either in $ls$ or in $nls$} \\
-	\IF nMax \leq lMax \THEN
-	\BEGIN
+    \IF nMax \leq lMax \THEN
+    \BEGIN
           nMin \GETS pos(inl) + length(inl) \\
           next(inl) \\
           \IF isNotAtEnd(inl) \DO
             nMax \GETS pos(inl) - 1
           \ELSE
             nMax \GETS \infty
-	\END
-	\ELSE
+    \END
+    \ELSE
           next(il)
       \END
     \END
@@ -420,10 +422,10 @@ to the actual perimeter.
 % Example of reconstruction of a discrete squares with various orientations
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=8cm]{images/perimRotatedSquares}
-\includegraphics[width=8cm]{images/errorRotatedSquares}
+\includegraphics[width=8cm]{images/perimRotatedEllipses}
+\includegraphics[width=8cm]{images/errorRotatedEllipses}
 \end{center}
-\caption{Variations of perimeter measure of a digitized square depending on the orientation. 
+\caption{Variations of perimeter measure of a digitized ellipse depending on the orientation. 
 Left: perimeter measures. Right: relative errors (in percent).}
 \label{fig:MeasureSquareOriented}
 \end{figure}
@@ -445,17 +447,20 @@ The difference is around 8 percent in average.
 
 \begin{table}[!htb]
 \begin{center}\begin{tabular}{ccccccc}
-shape	& $(\varphi,\theta)$ & $S$ 	& $S_{crofton^3}$ & $S_{crofton^{13}}$ & $S_{isosurface}$ \tabularnewline \hline 
-ball 		& $n.a.$  		& 	$11309.8$	& $11312.0$ 	& $11306.6$ 	& $12253.9$ 	\tabularnewline 
-prolate	& $( 0,  0)$  	& 	$3082.9$ 	& $2938.7$ 	& $3084.6$ 	& $3344.4$ 	\tabularnewline
-- 			& $(45,  0)$  	& 	$-$ 		& $3137.3$ 	& $3086.3$ 	& $3340.6$ 	\tabularnewline
-- 			& $(45, 45)$  	& 	$-$ 		& $3150.6$ 	& $3083.3$ 	& $3337.8$ 	\tabularnewline
-oblate 	& $( 0,  0)$  	& 	$6856.8$ 	& $6290.7$ 	& $6807.6$ 	& $7387.4$ 	\tabularnewline
-- 			& $(45,  0)$  	& 	$-$ 		& $6872.0$ 	& $6789.0$ 	& $7346.2$ 	\tabularnewline
-- 			& $(45, 45)$  	& 	$-$ 		& $7154.7$ 	& $6808.5$ 	& $7366.1$ 	\tabularnewline
-torus 		& $( 0,  0)$  	& 	$11843.5$	& $11417.3$ 	& $11792.9$ 	& $12785.4$ 	\tabularnewline
--			& $(45,  0)$  	& 	$-$    	& $11809.3$ 	& $11766.8$ 	& $12844.4$ 	\tabularnewline
-- 			& $(45, 45)$ 	& 	$-$ 	 	& $12086.0$ 	& $11822.4$ 	& $12798.4$ 	\tabularnewline
+Shape      & $(\varphi,\theta)$ & $S$            & $S_{crofton^3}$     & $S_{crofton^{13}}$  & $S_{VTKmarch}$       & $S_{ITKiso}$  \tabularnewline
+\hline 
+\hline 
+ball       & $n.a.$             &     $11309.8$  & $11312.0\ (+0.0\%)$ & $11306.6\ (-0.0\%)$ & $12298.2\ (+8.7\%)$  & $12299.5\ (+8.8\%)$ \tabularnewline 
+prolate    & $( 0,  0)$         &     $3082.9$   & $2938.7\ (-4.7\%)$  & $3084.6\ (+0.1\%)$  & $3354.1\ (+8.8\%)$   & $3354.9\ (+8.8\%)$  \tabularnewline
+-          & $(45,  0)$         &     $-$        & $3137.3\ (+1.8\%)$  & $3086.3\ (+0.1\%)$  & $3353.9\ (+8.8\%)$   & $3354.7\ (+8.8\%)$  \tabularnewline
+-          & $(45, 45)$         &     $-$        & $3150.6\ (+2.2\%)$  & $3083.3\ (+0.0\%)$  & $3351.5\ (+8.7\%)$   & $3352.2\ (+8.7\%)$  \tabularnewline
+oblate     & $( 0,  0)$         &     $6856.8$   & $6290.7\ (-8.3\%)$  & $6807.6\ (-0.7\%)$  & $7410.2\ (+8.1\%)$   & $7411.3\ (+8.1\%)$  \tabularnewline
+-          & $(45,  0)$         &     $-$        & $6872.0\ (+0.2\%)$  & $6789.0\ (-1.0\%)$  & $7369.7\ (+7.5\%)$   & $7370.7\ (+7.5\%)$  \tabularnewline
+-          & $(45, 45)$         &     $-$        & $7154.7\ (+4.3\%)$  & $6808.5\ (-0.7\%)$  & $7385.9\ (+7.7\%)$   & $7386.7\ (+7.7\%)$  \tabularnewline
+torus      & $( 0,  0)$         &     $11843.5$  & $11417.3\ (-3.6\%)$ & $11792.9\ (-0.4\%)$ & $12826.6\ (+8.3\%)$  & $12828.7\ (+8.3\%)$ \tabularnewline
+-          & $(45,  0)$         &     $-$        & $11809.3\ (-0.3\%)$ & $11766.8\ (-0.6\%)$ & $12787.4\ (+8.0\%)$  & $12789.3\ (+8.0\%)$ \tabularnewline
+-          & $(45, 45)$         &     $-$        & $12086.0\ (+1.9\%)$ & $11822.4\ (-0.2\%)$ & $12849.1\ (+8.5\%)$  & $12851.1\ (+8.5\%)$ \tabularnewline
+\hline 
 \end{tabular}\end{center}
 \caption{ \label{tab:CompareSurfaceArea}
 Differences between actual surface area and its measures with different methods, 
@@ -465,8 +470,33 @@ the azimut $\varphi$ (between 0 and 360 degrees) and the colatitude $\theta$ (be
 \end{table}
 
 
-% \section{Timing}
-% [c'est rapide]
+\section{Timing}
+
+The performance of the Crofton based method as well as several other methods available in ITK or VTK
+are shown in Table~\ref{tab:perf}. The timings were obtained using the {\tt
+./perf3D ../images/ball450.nrrd} command on an Intel(R) Xeon(R) CPU X5570 processor at 2.93GHz
+with 8192Kb cache, 24Gb of RAM running Ubuntu linux 11.04 64 bits with gcc 4.5.2.
+The input image have a size of $1000 \times 1000 \times 1000$ and contains a single binary object:
+a ball of radius 450.
+
+%./marchingCubes ../images/ball450.nrrd
+% Tcroft    Tmarch    Tmarch2    Timesh    speedupMarch    speedupMarch2    speedupIMesh    Scroft    Smarch    Smarch2    Simesh    %march    %march2    %imesh    fname    
+% 1.80882    26.6482    15.3972    29.1124    14.7324    8.51231    16.0947    2.32339e+06    2.33467e+06    2.52777e+06    2.52779e+06    0.483298    8.08555    8.08621    ../images/ball450.nrrd    
+
+\begin{table}[!htb]
+\begin{center}\begin{tabular}{cc}
+Method                                   & Timing \\
+ \hline 
+ \hline
+Proposed method                          & 1.80882 \\
+VTK marching cubes                       & 15.3972 \\
+VTK marching cubes + gaussian filtering  & 26.6482 \\
+ITK BinaryMask3DMeshSource               & 29.1124 \\
+ \hline
+\end{tabular}\end{center}
+\caption{ \label{tab:perf} }
+\end{table}
+
 
 \section{Application}
 
