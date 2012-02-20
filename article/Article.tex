@@ -38,6 +38,7 @@
 \colorbox{lightgray}{#1}
 }
 
+% To write tables with a font smaller than text
 \let\oldtabular=\tabular
 \def\tabular{\small\oldtabular}
 
@@ -335,14 +336,11 @@ architecture, providing a multithreaded implementation as long as there are seve
 \subsection{Test shapes}
 
 Perimeter and surface area are measured on discretization of various 2D and 3D shapes 
-whose true perimeter or surface area is known.
-
+whose true perimeter or surface area is known. 
 Planar test shapes include disks, rings obtained by the difference of several disks,
-trefoil shape, ellipses with $a=XX$ and $b=XX$, and rectangle with length $XX$ and width $XX$.
-
-Test shapes for 3D measurements include
-balls with various radii, hollow ball, prolate and oblate ellipsoids, and cuboids. 
-For each type of shape, several orientations were considered.
+trefoil shape, ellipses and rectangles with various sizes aspect ratios.
+Test shapes for 3D measurements include balls with various radii, hollow balls, 
+prolate and oblate ellipsoids, and cuboids. Only significant results are presented here.
 
 Shapes were discretized following the Gauss discretization scheme \cite{Klette2004, Legland2007}.
 Binary images can be considered as a subset of a rectangular grid $L_d$ where
@@ -358,7 +356,7 @@ cell centered on $x$ hits $X$ (See Fig.~\ref{fig:DiskDiscretization}).
 % Example of reconstruction of a discrete disk
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=12cm]{images/discreteDisks2}
+\includegraphics[width=10cm]{images/discreteDisks2}
 \end{center}
 \caption{Discretization of two disks with same radius and different positions. 
 A grid cell belong tho the reconstructed shape if its center is inside the original shape.
@@ -411,15 +409,15 @@ The oscillations of the variability is due to the fact that for disks with diame
 integer, the number of intersections with horizontal or vertical lines is always the same, 
 thus greatly reducing the variability of measures. 
 
-\subsection{Perimeter of squares with various orientations}
+\subsection{Perimeter of Ellipses with various orientations}
 
-Figure \ref{fig:MeasureSquareOriented} shows measures obtained on discretized squares (side 30 pixels)
-with various orientations. All methods oscillate around the expected value. 
-Using Crofton method with only 2 directions can produce greater errors on the measure than with 4 
+Figure \ref{fig:MeasureSquareOriented} shows measures obtained on discretized ellipses 
+(semi axis lengths equal to 30 and 10) with various orientations. 
+Using Crofton method with only 2 directions produces greater errors on the measure than with 4 
 directions. However, in both cases, the average over the orientations of the mean values is very close 
 to the actual perimeter.
 
-% Example of reconstruction of a discrete squares with various orientations
+% Example of reconstruction of a discrete ellipses with various orientations
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=8cm]{images/perimRotatedEllipses}
@@ -430,20 +428,23 @@ Left: perimeter measures. Right: relative errors (in percent).}
 \label{fig:MeasureSquareOriented}
 \end{figure}
 
+The perimeter by counting boundary pixels, for example by using Matlab's "regionprops" methods, 
+leads to a systematic bias: whatever the orientation, measure is different from the actual perimeter.
+Note that the difference does not decrease with the resolution.
 
-% TODO mesure pour des formes 3D
-% able
 
 \subsection{Surface area of 3D shapes}
 
-Comarison of surface area measured on several discrete reconstructed shapes is given in
+Comparison of surface area measured on several discrete reconstructed shapes is given in
 Table \ref{tab:CompareSurfaceArea}.
+Test shapes comprise a ball with radius 30 voxels, 
+prolate ellipsoids (semi axis lengths equal to 30, 10 and 10 voxels), 
+oblate ellipsoids (semi axis lengths equal to 10, 10 and 30 voxels), 
+and torus (outer and inner radius equal to 50 and 10 voxels).
+
 As for the planar case, the measure is closer to the actual value when using more
 directions. The error is around 2 percent in average for 3 directions, and less than
 1 percent for 13 directions.
-
-When using isosurface reconstruction, the surface area is systematically over estimated.
-The difference is around 8 percent in average.
 
 \begin{table}[!htb]
 \begin{center}\begin{tabular}{ccccccc}
@@ -468,6 +469,13 @@ on shapes with various orientations.
 The orientation is given by the direction of the shape rotation axis, defined by 
 the azimut $\varphi$ (between 0 and 360 degrees) and the colatitude $\theta$ (between 0 and 180 degrees).}
 \end{table}
+
+When using Crofton method, the measured perimeter is oscillating around the actual value.
+If 3 directions are used, relative error is usually less than 5 percents.
+Errors are smaller when 13 directions are used (maximum relative error equal to 1 percent).
+
+When using isosurface reconstruction, the surface area is systematically over estimated.
+The difference is around 8 percent in average.
 
 
 \section{Timing}
@@ -494,15 +502,12 @@ VTK marching cubes + gaussian filtering  & 26.6482 \\
 ITK BinaryMask3DMeshSource               & 29.1124 \\
  \hline
 \end{tabular}\end{center}
-\caption{ \label{tab:perf} }
+\caption{ \label{tab:perf} 
+Timing results for measuring the surface area of a ball with radius 450 voxels in a 
+$1000\times 1000 \times 1000$ voxels image.
+}
 \end{table}
 
-
-\section{Application}
-
-\subsection{ICOPAN}
-
-Methods were applied on images acquired within the ICOPAN project \cite{Andrey2010}.
 
 \appendix
 
