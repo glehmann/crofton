@@ -87,7 +87,7 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 Unlike the measure of the area in 2D or of the volume in 3D, the perimeter and the surface are not easily measurable in a discretized image.
 In this article we describe a method based on the Crofton formula to measure those two parameters in a discritized image. The accuracy of
 the method is discussed and tested on several known objects. An algorithm based on the run-length encoding of binary objects is presented
-and compared to a brute force approach.
+and compared to other approaches.
 An implementation is provided and integrated in the LabelObject/LabelMap framework contributed earlier by the authors.
 \end{abstract}
 
@@ -286,7 +286,7 @@ Roundness is a commom parameter used for comparing shapes independently of their
 It equals the square root of the "shape factor", or "isoperimetric deficit".
 It should be noted that although widely used, these parameters present many drawbacks: 
 high sensitivity to perimeter measure, 
-value possibly out of the expected bounds, similar values for different shapes\cite{Pirard2005}... 
+value possibly out of the expected bounds, similar values for different shapes\cite{Pirard2005}…
 
 We defined here the roundness as the ratio of equivalent $d$-perimeter over the measured $d$-perimeter. 
 The equivalent $d$-perimeter is defined as the perimeter of the $d$-ball with same volume $V$.
@@ -444,7 +444,7 @@ Figure \ref{fig:RoundnessRandomEllipses} shows the roundness measured on a popul
 semi axis lengths equal to 4 and 2 pixels. The center of the ellipses is chosen at random within the center pixel, and orientation
 is chosen at random between 0 and 180 degrees. 
 
-The variations in the perimeter measure cause variation in the roundness mesure. The variability of roundness is less when measured 
+The variations in the perimeter measure cause variation in the roundness measure. The variability of roundness is less when measured
 with the Crofton method using 4 directions. Not that in some cases, the computed roundness may be greater than 1, due to the error in perimeter measure.
 
 % Example of reconstruction of a discrete ellipses with various orientations
@@ -523,14 +523,14 @@ a ball of radius 450.
 Method                                   & Timing \\
  \hline 
  \hline
-Proposed method                          & 1.80882 \\
-VTK marching cubes                       & 15.3972 \\
+Proposed method                          & 1.80882 s \\
+VTK marching cubes                       & 15.3972  \\
 VTK marching cubes + gaussian filtering  & 26.6482 \\
 ITK BinaryMask3DMeshSource               & 29.1124 \\
  \hline
 \end{tabular}\end{center}
 \caption{ \label{tab:perf} 
-Timing results for measuring the surface area of a ball with radius 450 voxels in a 
+Excecution times in seconds for measuring the surface area of a ball with radius 450 voxels in a
 $1000\times 1000 \times 1000$ voxels image.
 }
 \end{table}
