@@ -282,7 +282,13 @@ xno[0] \GETS 1 \\
 
 \subsection{Roundness}
 
-The roundness is defined as the ratio of equivalent $d$-perimeter over the measured $d$-perimeter. 
+Roundness is a commom parameter used for comparing shapes independently of their size.
+It equals the square root of the "shape factor", or "isoperimetric deficit".
+It should be noted that although widely used, these parameters present many drawbacks: 
+high sensitivity to perimeter measure, 
+value possibly out of the expected bounds, similar values for different shapes\cite{Pirard2005}... 
+
+We defined here the roundness as the ratio of equivalent $d$-perimeter over the measured $d$-perimeter. 
 The equivalent $d$-perimeter is defined as the perimeter of the $d$-ball with same volume $V$.
 \begin{eqnarray}
 roundness             & = & \frac{P_{eq}}{P} \\
@@ -300,8 +306,8 @@ d!!                   & = & \begin{cases}
 
 
 Roundness takes values between $0$ and $1$. 
-It is equal to $1$ for circular or spherical shapes, 
-and decreases for more complicated shapes.
+It is equal to $1$ for circular or spherical shapes, and decreases for more complicated shapes.
+For 3D shapes, equivalent decriptive parameters can be defined using ratio of surface area and volume \cite{Andrey2010}.
 
 
 \section{Implementation}
@@ -333,7 +339,7 @@ architecture, providing a multithreaded implementation as long as there are seve
 
 \section{Evaluation method}
 
-\subsection{Test shapes}
+%\subsection{Test shapes}
 
 Perimeter and surface area are measured on discretization of various 2D and 3D shapes 
 whose true perimeter or surface area is known. 
@@ -356,7 +362,7 @@ cell centered on $x$ hits $X$ (See Fig.~\ref{fig:DiskDiscretization}).
 % Example of reconstruction of a discrete disk
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=10cm]{images/discreteDisks2}
+\includegraphics[width=8cm]{images/discreteDisks2}
 \end{center}
 \caption{Discretization of two disks with same radius and different positions. 
 A grid cell belong tho the reconstructed shape if its center is inside the original shape.
@@ -365,7 +371,7 @@ The reconstructed shapes have different size and shape.}
 \end{figure}
 
 
-\subsection{Measurements}
+%\subsection{Measurements}
 
 For each test shape, measurements were made on
 several discretisation of the shape, with various orientations and various origins.
@@ -395,7 +401,7 @@ and the variability is lower.
 % Example of reconstruction of a discrete disk
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=10cm]{images/perimeterDisks}
+\includegraphics[width=8cm]{images/perimeterDisks}
 \end{center}
 \caption{Perimeter measure of disks with various resolutions and at random positions}
 \label{fig:MeasureDiskPerimeter}
@@ -409,9 +415,9 @@ The oscillations of the variability is due to the fact that for disks with diame
 integer, the number of intersections with horizontal or vertical lines is always the same, 
 thus greatly reducing the variability of measures. 
 
-\subsection{Perimeter of Ellipses with various orientations}
+\subsection{Perimeter of ellipses with various orientations}
 
-Figure \ref{fig:MeasureSquareOriented} shows measures obtained on discretized ellipses 
+Figure \ref{fig:PerimeterOrientedEllipses} shows measures obtained on discretized ellipses 
 (semi axis lengths equal to 30 and 10) with various orientations. 
 Using Crofton method with only 2 directions produces greater errors on the measure than with 4 
 directions. However, in both cases, the average over the orientations of the mean values is very close 
@@ -425,12 +431,33 @@ to the actual perimeter.
 \end{center}
 \caption{Variations of perimeter measure of a digitized ellipse depending on the orientation. 
 Left: perimeter measures. Right: relative errors (in percent).}
-\label{fig:MeasureSquareOriented}
+\label{fig:PerimeterOrientedEllipses}
 \end{figure}
 
 The perimeter by counting boundary pixels, for example by using Matlab's "regionprops" methods, 
 leads to a systematic bias: whatever the orientation, measure is different from the actual perimeter.
 Note that the difference does not decrease with the resolution.
+
+\subsection{Roundness of random ellipses}
+
+Figure \ref{fig:RoundnessRandomEllipses} shows the roundness measured on a population of 100 discretized ellipses with 
+semi axis lengths equal to 4 and 2 pixels. The center of the ellipses is chosen at random within the center pixel, and orientation
+is chosen at random between 0 and 180 degrees. 
+
+The variations in the perimeter measure cause variation in the roundness mesure. The variability of roundness is less when measured 
+with the Crofton method using 4 directions. Not that in some cases, the computed roundness may be greater than 1, due to the error in perimeter measure.
+
+% Example of reconstruction of a discrete ellipses with various orientations
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[height=5cm]{images/demoEllipses42}
+%\includegraphics[height=5cm]{images/perimEllipses42Boxplot}
+\includegraphics[height=5cm]{images/roundnessEllipses42Boxplot}
+\end{center}
+\caption{Measure of roundness on random ellipses. Left: some examples of test ellipses and their discrete reconstructions. 
+Right: box plots of roundness computed from perimeter measured from different methods.}
+\label{fig:RoundnessRandomEllipses}
+\end{figure}
 
 
 \subsection{Surface area of 3D shapes}
