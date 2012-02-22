@@ -1,6 +1,6 @@
 
 # you should use the title of the article instead (this is the short title)
-ARTICLE_TITLE = Surface estimation using Crofton formula and run-length encoding
+ARTICLE_TITLE = Efficient N-Dimensional surface estimation using Crofton formula and run-length encoding
 
 # spaces are not allowed
 empty:=

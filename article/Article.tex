@@ -59,6 +59,14 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 % the relevant document. 
 \title{Efficient N-Dimensional surface estimation using Crofton formula and run-length encoding}
 
+%
+% NOTE: This is the last number of the "handle" URL that
+% The Insight Journal assigns to your paper as part of the
+% submission process. Please replace the number "1338" with
+% the actual handle number that you get assigned.
+%
+\newcommand{\IJhandlerIDnumber}{3342}
+
 % Increment the release number whenever significant changes are made.
 % The author and/or editor can define 'significant' however they like.
 % \release{0.00}
@@ -75,6 +83,14 @@ colorlinks,linkcolor={blue},citecolor={blue},urlcolor={blue},
 }}
 
 \begin{document}
+
+%
+% Add hyperlink to the web location and license of the paper.
+% The argument of this command is the handler identifier given
+% by the Insight Journal to this paper.
+%
+\IJhandlefooter{\IJhandlerIDnumber}
+
 \maketitle
 
 \ifhtml
@@ -90,6 +106,8 @@ the method is discussed and tested on several known objects. An algorithm based 
 and compared to other approaches.
 An implementation is provided and integrated in the LabelObject/LabelMap framework contributed earlier by the authors.
 \end{abstract}
+
+\IJhandlenote{\IJhandlerIDnumber}
 
 \tableofcontents
 
@@ -286,7 +304,7 @@ Roundness is a commom parameter used for comparing shapes independently of their
 It equals the square root of the "shape factor", or "isoperimetric deficit".
 It should be noted that although widely used, these parameters present many drawbacks: 
 high sensitivity to perimeter measure, 
-value possibly out of the expected bounds, similar values for different shapes\cite{Pirard2005}…
+value possibly out of the expected bounds, similar values for different shapes\cite{Pirard2005}...
 
 We defined here the roundness as the ratio of equivalent $d$-perimeter over the measured $d$-perimeter. 
 The equivalent $d$-perimeter is defined as the perimeter of the $d$-ball with same volume $V$.
